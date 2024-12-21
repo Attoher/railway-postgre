@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>Form Input ke PostgreSQL</h1>
-  <form action="/submit" method="POST">
+  <form id="formSubmit">
     <label for="name">Nama:</label>
     <input type="text" id="name" name="name" required><br><br>
 
@@ -16,5 +16,36 @@
 
     <button type="submit">Kirim</button>
   </form>
+
+  <div id="responseMessage"></div>
+
+  <script>
+    // Menangani pengiriman form dengan AJAX
+    document.getElementById("formSubmit").addEventListener("submit", function(event) {
+      event.preventDefault();  // Mencegah form submit biasa
+
+      // Ambil nilai dari input form
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      // Kirim data menggunakan Fetch API (AJAX)
+      fetch("/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email })  // Mengirim data sebagai JSON
+      })
+      .then(response => response.text())  // Mendapatkan respon dari server
+      .then(data => {
+        // Menampilkan respon di halaman
+        document.getElementById("responseMessage").innerText = data;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById("responseMessage").innerText = "Terjadi kesalahan!";
+      });
+    });
+  </script>
 </body>
 </html>
