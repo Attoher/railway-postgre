@@ -12,10 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Koneksi PostgreSQL dari Railway
+// Koneksi PostgreSQL dari Supabase
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Railway memerlukan SSL
+  ssl: { rejectUnauthorized: false }, // Supabase memerlukan SSL
 });
 
 // Route utama
@@ -30,7 +30,7 @@ app.post("/submit", async (req, res) => {
   try {
     const query = "INSERT INTO users (name, email) VALUES ($1, $2)";
     await pool.query(query, [name, email]);
-    res.send("Data berhasil disimpan ke PostgreSQL Railway!");
+    res.send("Data berhasil disimpan ke PostgreSQL Supabase!");
   } catch (err) {
     console.error(err);
     res.status(500).send("Terjadi kesalahan.");
